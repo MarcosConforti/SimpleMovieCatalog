@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#181B47"
+    tools:context=".ui.WelcomeActivity">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/tmdb"/>
+
+    <Button
+        android:id="@+id/btn_nextActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="36dp"
+        style="?attr/materialButtonOutlinedStyle"
+        android:text="@string/go"
+        android:textColor="@color/white"
+        app:strokeColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="italic"
+        app:cornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_acercaDe" />
+
+    <TextView
+        android:id="@+id/tv_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="The Movie Data Base"
+        android:textColor="#D2DA2E"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/iv_image"
+        app:layout_constraintStart_toStartOf="@+id/iv_image"
+        app:layout_constraintTop_toBottomOf="@id/iv_image" />
+
+    <TextView
+        android:id="@+id/tv_acercaDe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="22dp"
+        android:inputType="textMultiLine"
+        android:text="This is a simple Movie Catalog written in Kotlin using a modern Android Architecture"
+        android:textAlignment="center"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="22sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/tv_welcome"
+        app:layout_constraintStart_toStartOf="@+id/tv_welcome"
+        app:layout_constraintTop_toBottomOf="@+id/tv_welcome" />
+
+    <ImageView
+        android:id="@+id/iv_imageTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/alkemy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

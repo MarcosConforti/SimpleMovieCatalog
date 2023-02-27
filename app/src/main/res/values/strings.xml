@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Simple Movie Catalog</string>
+    <string name="movie">Movie</string>
+    <string name="favorite">Favorite</string>
+    <string name="title">Title</string>
+    <string name="voteAverage">VoteAverage</string>
+    <string name="releaseDate">ReleaseDate</string>
+    <string name="overview">OverView</string>
+    <string name="go">Go!</string>
+</resources>
