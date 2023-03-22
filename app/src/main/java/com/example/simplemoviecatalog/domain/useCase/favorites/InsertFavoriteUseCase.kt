@@ -9,8 +9,8 @@ class InsertFavoriteUseCase @Inject constructor(private val favoritesRepository:
     suspend fun addToFavorites(favorites: FavoritesEntities) =
         favoritesRepository.addToFavorites(favorites)
 
-    suspend fun checkFavorites(id:String) = favoritesRepository.checkFavorite(id)
+    //suspend operator fun invoke() = favoritesRepository.getFavorite()
 
-    suspend fun removeToFavorites(id:String) = favoritesRepository.cleanList(id)
+    suspend fun removeToFavorites(title:String) = favoritesRepository.cleanList(title)
 
 }

@@ -6,40 +6,43 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
 import com.example.simplemoviecatalog.data.model.FavoritesModel
+import com.example.simplemoviecatalog.domain.useCase.favorites.GetFavoriteUseCase
 import com.example.simplemoviecatalog.domain.useCase.favorites.InsertFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoriteViewModel @Inject constructor(private val favoriteUseCase: InsertFavoriteUseCase) :
+class FavoriteViewModel @Inject constructor(private val favoriteUseCase: InsertFavoriteUseCase,
+private val getFavoriteUseCase: GetFavoriteUseCase) :
     ViewModel() {
 
-    private val _favoritesUseCase = MutableLiveData<List<FavoritesModel>>()
+    private val _favoritesUseCase = MutableLiveData<List<FavoritesEntities>>()
 
-    val favoriteLiveData: LiveData<List<FavoritesModel>> = _favoritesUseCase
+    val favoriteLiveData: LiveData<List<FavoritesEntities>> = _favoritesUseCase
+
+    /*private val _addFavoriteUseCase = MutableLiveData<FavoritesEntities>()
+    val addFavoriteLiveData:LiveData<FavoritesEntities> = _addFavoriteUseCase*/
 
 
     fun addToFavorites(favorite: FavoritesEntities){
         viewModelScope.launch {
-            favoriteUseCase.addToFavorites(
-                FavoritesEntities(
-                    favorite.id,
-                    favorite.title,
-                    favorite.releaseDate,
-                    favorite.voteAverage,
-                    favorite.overview,
-                    favorite.image
-                )
-            )
+            favoriteUseCase.addToFavorites(favorite)
         }
     }
-
-    suspend fun checkFavorite(id: String) = favoriteUseCase.checkFavorites(id)
-
-    suspend fun removeFavorites(id: String) {
+   /* fun deleteMovie(favorite:String){
         viewModelScope.launch {
-            favoriteUseCase.removeToFavorites(id)
+            favoriteUseCase.removeToFavorites(favorite)
+        }
+    }*/
+    fun getFavorites(){
+        viewModelScope.launch {
+            val getFavoriteUseCase = getFavoriteUseCase()
+            if(getFavoriteUseCase.isNotEmpty()){
+                _favoritesUseCase.value = getFavoriteUseCase
+            }
+
         }
     }
+
 }

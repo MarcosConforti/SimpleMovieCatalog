@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
 
     private lateinit var binding: ActivityMainBinding
 
-    //private val movieList = ArrayList<DomainModel>() //aca esta el error
-
     private var popularMoviesAdapter = PopularMoviesAdapter(emptyList(), this)
 
     private val moviesViewModel: MoviesViewModel by viewModels()
@@ -38,6 +36,7 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
 
         configRecycler()
         configObservers()
+        onClickFavorites()
 
 
     }
@@ -60,7 +59,6 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
                 Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     override fun onMoviesClicked(movie: DomainModel) {
@@ -74,33 +72,20 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        //moviesViewModel.searchItem(query.orEmpty())
         return false
+
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-       // filterList(newText)
+        popularMoviesAdapter.filter.filter(newText)
         return false
     }
-    private fun searchMovie(query:String?){
-        val searchQuery = "%$query%"
 
-
+    private fun onClickFavorites() {
+        binding.floatingActionButton.setOnClickListener {
+            val intent = Intent(this, FavoritesActivity::class.java)
+            startActivity(intent)
+        }
     }
 
-    /*private fun filterList(query: String?) {
-        if (query != null) {
-            val filteredList = ArrayList<DomainModel>()
-            for (i in movieList) {
-                if (i.title.lowercase(Locale.getDefault()).contains(query)) {
-                    filteredList.add(i)
-                }
-            }
-            if (filteredList.isEmpty()) {
-                Toast.makeText(this, "Error al buscar pelicula", Toast.LENGTH_SHORT).show()
-            } else {
-                popularMoviesAdapter.setFilteredList(filteredList)
-            }
-        }
-    }*/
 }

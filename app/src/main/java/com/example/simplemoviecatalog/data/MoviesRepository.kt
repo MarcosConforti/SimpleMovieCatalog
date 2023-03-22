@@ -3,10 +3,14 @@ package com.example.simplemoviecatalog.data
 import com.example.simplemoviecatalog.data.database.dao.MoviesDao
 import com.example.simplemoviecatalog.data.database.entities.MoviesEntities
 import com.example.simplemoviecatalog.data.database.entities.toMovieDataBase
+import com.example.simplemoviecatalog.data.model.MoviesModel
+import com.example.simplemoviecatalog.data.model.MoviesResponse
 import com.example.simplemoviecatalog.data.network.APIService
+import com.example.simplemoviecatalog.domain.MovieList
 import com.example.simplemoviecatalog.domain.NetworkState
 import com.example.simplemoviecatalog.domain.model.DomainModel
 import com.example.simplemoviecatalog.domain.model.toDomainMovie
+import retrofit2.HttpException
 import javax.inject.Inject
 
 //esta clase funciona para seleccionar de donde el programa tomara las peliculas, si de la api o db
@@ -14,8 +18,6 @@ class MoviesRepository @Inject constructor(
     private val api: APIService,
     private val moviesDao: MoviesDao
 ) {
-
-
     suspend fun searchMovie(query: String?) = moviesDao.searchMovie(query)
 
     suspend fun getPopularMoviesFromApi(): NetworkState<List<DomainModel>> =
@@ -42,17 +44,13 @@ class MoviesRepository @Inject constructor(
         return response.map { it.toDomainMovie() }
     }
 
-    suspend fun insertMovies(movies: List<MoviesEntities>) {
-        moviesDao.insertAll(movies)
-    }
+    private suspend fun insertMovies(movies: List<MoviesEntities>) = moviesDao.insertAll(movies)
 
     suspend fun insertOnlyMovie(movie: MoviesEntities) {
         moviesDao.insert(movie)
     }
 
-    suspend fun cleanList() {
-        moviesDao.deleteAllMovies()
-    }
+    private suspend fun cleanList() = moviesDao.deleteAllMovies()
 
 
 }

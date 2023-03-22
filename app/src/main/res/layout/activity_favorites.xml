@@ -2,43 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/searchViewStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/searchView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/tv_favoriteMovies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/black"
                 android:hint="@string/favorite"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
                 android:textSize="28sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                style="@style/layoutStyle"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_favoriteMovies"
@@ -47,8 +38,5 @@
                 android:layout_marginTop="5dp"
                 android:background="#181B47" />
         </LinearLayout>
-
-    </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

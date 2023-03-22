@@ -9,17 +9,14 @@ import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
 @Dao
 interface FavoritesDao {
 
-    @Insert
-    suspend fun insert(favorite: FavoritesEntities)
 
-    @Query("SELECT id FROM favorites_table WHERE id = :id")
-    suspend fun checkFavorites(id: String):Int
+
+    @Query("SELECT * FROM favorites_table")
+    suspend fun getFavorites(): List<FavoritesEntities>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFavorites(favorites:List<FavoritesEntities>)
-
-    //insertar una pelicula
+    suspend fun insertFavorites(favorites: FavoritesEntities)
 
     @Query("DELETE FROM favorites_table WHERE id = :id")
-    suspend fun deleteFromFavorites(id: String):Int
+    suspend fun deleteFromFavorites(id: String): Int
 }
