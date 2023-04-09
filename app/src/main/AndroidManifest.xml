@@ -17,17 +17,17 @@
         android:theme="@style/Theme.SimpleMovieCatalog"
         tools:targetApi="31">
         <activity
-            android:name=".ui.FavoritesActivity"
+            android:name=".ui.activities.FavoritesActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.DetailActivity"
+            android:name=".ui.activities.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".ui.WelcomeActivity"
+            android:name=".ui.activities.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.simplemoviecatalog.ui.recyclerViews
+package com.example.simplemoviecatalog.ui.adapters.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,6 @@ import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
 
 class FavoritesAdapter(
     private var favoritesList: List<FavoritesEntities>,
-    private var onClickFavoritesListener: OnClickFavoritesListener?
 ) : RecyclerView.Adapter<FavoritesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
@@ -19,7 +18,6 @@ class FavoritesAdapter(
     override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
         val item = favoritesList[position]
         holder.render(item)
-        holder.itemView.setOnClickListener { onClickFavoritesListener?.onFavoritesClicked(item) }
     }
 
     override fun getItemCount(): Int = favoritesList.size
@@ -28,5 +26,15 @@ class FavoritesAdapter(
         favoritesList = newFavoriteList
         notifyDataSetChanged()
     }
+
+    fun removeFavorite(favorite: FavoritesEntities) {
+        favoritesList.indexOf(favorite)
+        val index = favoritesList.indexOf(favorite)
+        if (index >= 0) {
+            favoritesList = favoritesList.toMutableList().apply { removeAt(index) }.toList()
+            notifyItemRemoved(index)
+        }
+    }
+
 
 }

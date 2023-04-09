@@ -1,9 +1,9 @@
-package com.example.simplemoviecatalog.ui.recyclerViews
+package com.example.simplemoviecatalog.ui.adapters
 
 import android.widget.Filter
 import androidx.core.text.isDigitsOnly
-import com.example.simplemoviecatalog.data.model.MoviesModel
 import com.example.simplemoviecatalog.domain.model.DomainModel
+import com.example.simplemoviecatalog.ui.adapters.movie.PopularMoviesAdapter
 
 class MoviesListFilter(
     private val adapter: PopularMoviesAdapter

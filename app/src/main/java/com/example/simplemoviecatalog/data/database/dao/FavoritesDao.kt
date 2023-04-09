@@ -1,10 +1,10 @@
 package com.example.simplemoviecatalog.data.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
+import com.example.simplemoviecatalog.data.model.FavoritesModel
+import com.example.simplemoviecatalog.data.model.MoviesModel
+import com.example.simplemoviecatalog.domain.MovieList
 
 @Dao
 interface FavoritesDao {
@@ -17,6 +17,6 @@ interface FavoritesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavorites(favorites: FavoritesEntities)
 
-    @Query("DELETE FROM favorites_table WHERE id = :id")
-    suspend fun deleteFromFavorites(id: String): Int
+    @Delete
+    suspend fun deleteFromFavorites(movie:FavoritesEntities)
 }

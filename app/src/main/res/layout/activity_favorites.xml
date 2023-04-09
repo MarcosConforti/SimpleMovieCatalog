@@ -12,11 +12,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
         <LinearLayout
-            android:layout_width="match_parent"
+            style="@style/linearLayoutStyle"
             android:layout_height="0dp"
-            android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/searchView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,19 +22,12 @@
 
             <TextView
                 android:id="@+id/tv_favoriteMovies"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
                 android:hint="@string/favorite"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                style="@style/layoutStyle"/>
+                style="@style/mainTextStyle"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_favoriteMovies"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:background="#181B47" />
+                style="@style/recyclerStyle"/>
         </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

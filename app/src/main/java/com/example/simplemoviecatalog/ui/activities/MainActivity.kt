@@ -1,4 +1,4 @@
-package com.example.simplemoviecatalog.ui
+package com.example.simplemoviecatalog.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simplemoviecatalog.databinding.ActivityMainBinding
 import com.example.simplemoviecatalog.domain.NetworkState
 import com.example.simplemoviecatalog.domain.model.DomainModel
-import com.example.simplemoviecatalog.ui.recyclerViews.OnClickMoviesListener
-import com.example.simplemoviecatalog.ui.recyclerViews.PopularMoviesAdapter
+import com.example.simplemoviecatalog.ui.adapters.movie.OnClickMoviesListener
+import com.example.simplemoviecatalog.ui.adapters.movie.PopularMoviesAdapter
 import com.example.simplemoviecatalog.ui.viewModels.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,8 +37,6 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
         configRecycler()
         configObservers()
         onClickFavorites()
-
-
     }
 
     private fun configRecycler() {
@@ -63,17 +61,12 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
 
     override fun onMoviesClicked(movie: DomainModel) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("image", movie.image)
-        intent.putExtra("overView", movie.overview)
-        intent.putExtra("title", movie.title)
-        intent.putExtra("releaseDate", movie.releaseDate)
-        intent.putExtra("voteAverage", movie.voteAverage)
+        intent.putExtra("movie", movie)
         startActivity(intent)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
-
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {

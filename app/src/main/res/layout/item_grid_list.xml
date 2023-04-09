@@ -10,10 +10,7 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:orientation="vertical">
+        style="@style/cardLinearLayoutStyle">
 
         <ImageView
             android:id="@+id/iv_image"
@@ -23,21 +20,12 @@
         <TextView
             android:id="@+id/tv_title"
             android:hint="@string/title"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="4dp"
-            android:textSize="18sp"
-            style="@style/layoutStyle"/>
+            style="@style/cardTextStyle"/>
 
         <TextView
             android:id="@+id/tv_voteAverage"
-            android:layout_marginTop="5dp"
             android:hint="@string/voteAverage"
-            android:paddingStart="2dp"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            style="@style/voteAverageStyle"/>
+            style="@style/cardVoteAverageStyle"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

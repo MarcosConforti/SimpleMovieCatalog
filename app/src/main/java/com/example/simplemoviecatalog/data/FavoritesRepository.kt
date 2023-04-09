@@ -2,6 +2,9 @@ package com.example.simplemoviecatalog.data
 
 import com.example.simplemoviecatalog.data.database.dao.FavoritesDao
 import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
+import com.example.simplemoviecatalog.data.model.FavoritesModel
+import com.example.simplemoviecatalog.data.model.MoviesModel
+import com.example.simplemoviecatalog.domain.MovieList
 import javax.inject.Inject
 
 //esta clase funciona para seleccionar de donde el programa tomara las peliculas, si de la api o db
@@ -14,6 +17,6 @@ class FavoritesRepository @Inject constructor(
 
     suspend fun getFavorite() = favoritesDao.getFavorites()
 
-    suspend fun cleanList(id: String) = favoritesDao.deleteFromFavorites(id)
+    suspend fun cleanList(movie : FavoritesEntities) = favoritesDao.deleteFromFavorites(movie)
 
 }

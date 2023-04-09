@@ -10,4 +10,5 @@
     <string name="add_to_favorites">Add to Favorites</string>
     <string name="the_movie_data_base">The Movie Data Base</string>
     <string name="tv_about">This is a simple Movie Catalog written in Kotlin using a modern Android Architecture</string>
+    <string name="delete_to_favorites">Remove to Favorites</string>
 </resources>

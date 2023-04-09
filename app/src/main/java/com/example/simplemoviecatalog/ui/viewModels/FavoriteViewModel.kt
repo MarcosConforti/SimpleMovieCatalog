@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
-import com.example.simplemoviecatalog.data.model.FavoritesModel
 import com.example.simplemoviecatalog.domain.useCase.favorites.GetFavoriteUseCase
 import com.example.simplemoviecatalog.domain.useCase.favorites.InsertFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,20 +20,12 @@ private val getFavoriteUseCase: GetFavoriteUseCase) :
 
     val favoriteLiveData: LiveData<List<FavoritesEntities>> = _favoritesUseCase
 
-    /*private val _addFavoriteUseCase = MutableLiveData<FavoritesEntities>()
-    val addFavoriteLiveData:LiveData<FavoritesEntities> = _addFavoriteUseCase*/
-
 
     fun addToFavorites(favorite: FavoritesEntities){
         viewModelScope.launch {
             favoriteUseCase.addToFavorites(favorite)
         }
     }
-   /* fun deleteMovie(favorite:String){
-        viewModelScope.launch {
-            favoriteUseCase.removeToFavorites(favorite)
-        }
-    }*/
     fun getFavorites(){
         viewModelScope.launch {
             val getFavoriteUseCase = getFavoriteUseCase()
@@ -42,6 +33,12 @@ private val getFavoriteUseCase: GetFavoriteUseCase) :
                 _favoritesUseCase.value = getFavoriteUseCase
             }
 
+        }
+    }
+    fun deleteFavoriteMovie(movie: FavoritesEntities){
+        viewModelScope.launch {
+            favoriteUseCase.removeToFavorites(movie)
+            getFavorites()
         }
     }
 

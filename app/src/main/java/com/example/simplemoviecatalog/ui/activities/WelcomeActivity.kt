@@ -1,10 +1,8 @@
-package com.example.simplemoviecatalog.ui
+package com.example.simplemoviecatalog.ui.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ProgressBar
-import androidx.core.view.isVisible
 import com.example.simplemoviecatalog.databinding.ActivityWelcomeBinding
 
 

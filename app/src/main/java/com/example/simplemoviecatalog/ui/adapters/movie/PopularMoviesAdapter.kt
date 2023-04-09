@@ -1,4 +1,4 @@
-package com.example.simplemoviecatalog.ui.recyclerViews
+package com.example.simplemoviecatalog.ui.adapters.movie
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +7,7 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemoviecatalog.R
 import com.example.simplemoviecatalog.domain.model.DomainModel
+import com.example.simplemoviecatalog.ui.adapters.MoviesListFilter
 
 class PopularMoviesAdapter(
     private var popularMoviesList: List<DomainModel>,
