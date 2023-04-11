@@ -9,8 +9,6 @@ import com.example.simplemoviecatalog.domain.MovieList
 @Dao
 interface FavoritesDao {
 
-
-
     @Query("SELECT * FROM favorites_table")
     suspend fun getFavorites(): List<FavoritesEntities>
 
@@ -19,4 +17,7 @@ interface FavoritesDao {
 
     @Delete
     suspend fun deleteFromFavorites(movie:FavoritesEntities)
+
+    @Query("SELECT EXISTS(SELECT * FROM favorites_table WHERE title = :title)")
+    suspend fun verificarSiPeliculaEsFavorita(title:String): Boolean
 }

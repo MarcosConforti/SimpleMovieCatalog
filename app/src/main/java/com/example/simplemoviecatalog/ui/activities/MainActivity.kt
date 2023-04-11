@@ -59,12 +59,6 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
         }
     }
 
-    override fun onMoviesClicked(movie: DomainModel) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("movie", movie)
-        startActivity(intent)
-    }
-
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
     }
@@ -72,6 +66,12 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
     override fun onQueryTextChange(newText: String?): Boolean {
         popularMoviesAdapter.filter.filter(newText)
         return false
+    }
+
+    override fun onMoviesClicked(movie: DomainModel) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("movie", movie)
+        startActivity(intent)
     }
 
     private fun onClickFavorites() {

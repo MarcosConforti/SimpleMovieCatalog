@@ -15,5 +15,7 @@ data class DomainFavoritesModel(
     val image: String
 ):Parcelable
 //funcion de extension para realizar los mapers
-fun FavoritesModel.toDomainFavorites() = DomainFavoritesModel(id.length,title, voteAverage,releaseDate,overview,image)
-fun FavoritesEntities.toDomainFavorites() = DomainFavoritesModel(id,title, voteAverage,releaseDate,overview, image)
+fun FavoritesEntities.toDomainFavoritesModel() =
+    DomainFavoritesModel(id, title, voteAverage, releaseDate, overview, image)
+fun DomainFavoritesModel.toFavoritesEntities() =
+    FavoritesEntities(id, title, releaseDate, voteAverage, overview, image)

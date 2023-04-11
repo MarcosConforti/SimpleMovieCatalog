@@ -5,8 +5,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
 import com.example.simplemoviecatalog.databinding.ActivityDetailBinding
+import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
 import com.example.simplemoviecatalog.domain.model.DomainModel
 import com.example.simplemoviecatalog.ui.adapters.favorite.FavoritesAdapter
 import com.example.simplemoviecatalog.ui.viewModels.FavoriteViewModel
@@ -14,16 +14,14 @@ import com.example.simplemoviecatalog.utils.Constants
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
-object FavoritesList {
-    var favorites: List<FavoritesEntities> = emptyList()
-}
-
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
 
-    private var favoritesAdapter = FavoritesAdapter(emptyList())
+    private val favoritesAdapter: FavoritesAdapter by lazy {
+        FavoritesAdapter(emptyList())
+    }
 
     private val favoritesViewModel: FavoriteViewModel by viewModels()
 
@@ -33,12 +31,13 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getMovies()
-        addToFavorites()
-        deleteToFavorites()
+        binding.btnAddToFavorites.setOnClickListener { verifyFavorites() }
+        binding.btnDeleteToFavorites.setOnClickListener { deleteFromFavorites() }
+
     }
 
     private fun getMovies() {
-        val movie = intent.getParcelableExtra<DomainModel>("movie")
+        val movie = intent.extras?.getParcelable<DomainModel>("movie")
         movie?.let {
             binding.tvTitle.text = it.title
             binding.tvOverview.text = it.overview
@@ -49,35 +48,53 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun addToFavorites() {
-        binding.btnAddToFavorites.setOnClickListener {
-            val movie = createMovieInstance()
-            favoritesViewModel.addToFavorites(movie)
-            FavoritesList.favorites = favoritesViewModel.getFavorites()
-            Toast.makeText(this, "se ha agregado a favoritos", Toast.LENGTH_SHORT).show()
+    private fun verifyFavorites() {
+        val movie = intent.extras?.getParcelable<DomainModel>("movie")
+        movie?.let {
+            favoritesViewModel.verifyFavorite(it.title)
+            favoritesViewModel.verifyLiveData.observe(this) { isFavorite ->
+                if (isFavorite) {
+                    binding.btnAddToFavorites.isEnabled = false
+                    Toast.makeText(this,"La película ${it.title} ya está en favoritos.",
+                        Toast.LENGTH_SHORT).show()
+                } else {
+                    addToFavorites(it)
+                    binding.btnAddToFavorites.isEnabled = false
+                }
+            }
         }
+    }
+
+
+    private fun addToFavorites(movie:DomainModel) {
+        val movie = createMovieInstance(movie)
+        favoritesViewModel.addToFavorites(movie)
+        favoritesViewModel.getFavorites()
+        Toast.makeText(this, "Se ha agregado a favoritos.",
+            Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     //deberia eliminar y actualizar la lista de favoritos
-    private fun deleteToFavorites() {
-        binding.btnDeleteToFavorites.setOnClickListener {
-            val movie = createMovieInstance()
-            favoritesViewModel.deleteFavoriteMovie(movie)
-            favoritesAdapter.removeFavorite(movie)
-            favoritesAdapter.notifyDataSetChanged()
-            Toast.makeText(this, "se ha eliminado de favoritos", Toast.LENGTH_SHORT).show()
-            favoritesViewModel.getFavorites()
+    private fun deleteFromFavorites() {
+        val movie = intent.extras?.getParcelable<DomainModel>("movie")
+        movie?.let {
+            val favoritesMovie = createMovieInstance(movie)
+            favoritesViewModel.deleteFavoriteMovie(favoritesMovie)
+            favoritesAdapter.removeFavorite(favoritesMovie)
+            Toast.makeText(this, "Se ha eliminado de favoritos.", Toast.LENGTH_SHORT).show()
+            binding.btnAddToFavorites.isEnabled = true
+            finish()
         }
     }
 
-    private fun createMovieInstance(): FavoritesEntities {
-        val movie = intent.getParcelableExtra<DomainModel>("movie")
-        return FavoritesEntities(
-            title = movie?.title.orEmpty(),
-            overview = movie?.overview.orEmpty(),
-            releaseDate = movie?.releaseDate.orEmpty(),
-            voteAverage = movie?.voteAverage.orEmpty(),
-            image = movie?.image.orEmpty()
+    private fun createMovieInstance(movie: DomainModel): DomainFavoritesModel {
+        return DomainFavoritesModel(
+            title = movie.title,
+            overview = movie.overview,
+            releaseDate = movie.releaseDate,
+            voteAverage = movie.voteAverage,
+            image = movie.image
         )
     }
 }
