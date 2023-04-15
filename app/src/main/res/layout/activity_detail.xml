@@ -61,11 +61,13 @@
                 style="@style/bottomStyle"
                 android:text="@string/add_to_favorites"
                 android:textColor="@color/white"
-                android:backgroundTint="@color/addToFavorites_color"/>
+                android:backgroundTint="@color/addToFavorites_color"
+                app:cornerRadius="20dp"/>
             <Button
                 android:id="@+id/btn_deleteToFavorites"
                 style="@style/bottomStyle"
                 android:backgroundTint="@color/deleteToFavorite_color"
+                app:cornerRadius="20dp"
                 android:textColor="@color/white"
                 android:text="@string/delete_to_favorites"/>
         </LinearLayout>

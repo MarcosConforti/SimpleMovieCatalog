@@ -39,7 +39,9 @@ class FavoritesActivity : AppCompatActivity() {
     }
 
     private fun configObservers() {
+        //Traigo los favoritos
         favoritesViewModel.getFavorites()
+        //Observo los cambios en la lista y seteo el progressBar
         favoritesViewModel.favoriteLiveData.observe(this, Observer { favorites ->
             if (favorites.isNotEmpty()) {
                 progressBar.isVisible = false

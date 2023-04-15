@@ -14,6 +14,7 @@ class PopularMoviesAdapter(
     private var onClickMoviesListener: OnClickMoviesListener?
 ) : RecyclerView.Adapter<PopularMoviesViewHolder>(), Filterable {
 
+
     private val filter = MoviesListFilter(this)
     var filteredPopularMoviesList: List<DomainModel> = emptyList()
 

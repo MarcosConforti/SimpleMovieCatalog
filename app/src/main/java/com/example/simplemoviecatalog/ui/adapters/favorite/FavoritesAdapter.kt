@@ -27,6 +27,7 @@ class FavoritesAdapter(
         notifyDataSetChanged()
     }
 
+    //ChatGPT me recomendo hacer esta funcion que actualiza la lista.Pero no "funciona"
     fun removeFavorite(favorite: DomainFavoritesModel) {
         favoritesList.indexOf(favorite)
         val index = favoritesList.indexOf(favorite)

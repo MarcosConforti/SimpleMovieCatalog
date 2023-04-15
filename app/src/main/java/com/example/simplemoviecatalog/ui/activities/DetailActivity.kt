@@ -35,7 +35,7 @@ class DetailActivity : AppCompatActivity() {
         binding.btnDeleteToFavorites.setOnClickListener { deleteFromFavorites() }
 
     }
-
+    //Recupero los datos del MainActivity
     private fun getMovies() {
         val movie = intent.extras?.getParcelable<DomainModel>("movie")
         movie?.let {
@@ -47,7 +47,7 @@ class DetailActivity : AppCompatActivity() {
             binding.progressBar.isVisible = false
         }
     }
-
+    //Verifica si la pelicula ya se encuentra en la base de datos y desabilita el boton
     private fun verifyFavorites() {
         val movie = intent.extras?.getParcelable<DomainModel>("movie")
         movie?.let {
@@ -80,9 +80,12 @@ class DetailActivity : AppCompatActivity() {
         val movie = intent.extras?.getParcelable<DomainModel>("movie")
         movie?.let {
             val favoritesMovie = createMovieInstance(movie)
+            //Borra una pelicula de la base de datos
             favoritesViewModel.deleteFavoriteMovie(favoritesMovie)
+            //Saca y actualiza el adapter...supuestamente
             favoritesAdapter.removeFavorite(favoritesMovie)
             Toast.makeText(this, "Se ha eliminado de favoritos.", Toast.LENGTH_SHORT).show()
+            //Al eliminar una pelicula, desabilita el boton
             binding.btnAddToFavorites.isEnabled = true
             finish()
         }

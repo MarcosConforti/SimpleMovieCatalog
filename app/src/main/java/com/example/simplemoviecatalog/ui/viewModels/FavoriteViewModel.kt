@@ -49,10 +49,11 @@ class FavoriteViewModel @Inject constructor(
             getFavorites()
         }
     }
-    suspend fun isFavorite(title: String): Boolean {
+    //funcion que verifica si es favorito
+    private suspend fun isFavorite(title: String): Boolean {
         return verifyFavoriteUseCase.verifyFavorite(title)
     }
-
+    //funcion que se utiliza en la DetailActivity
     fun verifyFavorite(title: String): Boolean {
         var isFavorite = false
         viewModelScope.launch {
