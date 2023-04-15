@@ -9,6 +9,7 @@ import com.example.simplemoviecatalog.R
 import com.example.simplemoviecatalog.domain.model.DomainModel
 import com.example.simplemoviecatalog.ui.adapters.MoviesListFilter
 
+//Verificar por que no actualiza la el recycler al momento de eliminar un caracter
 class PopularMoviesAdapter(
     private var popularMoviesList: List<DomainModel>,
     private var onClickMoviesListener: OnClickMoviesListener?
@@ -17,19 +18,15 @@ class PopularMoviesAdapter(
     private val filter = MoviesListFilter(this)
     var filteredPopularMoviesList: List<DomainModel> = emptyList()
 
+    //esto fue idea de ChatGPT
     init {
         filteredPopularMoviesList = popularMoviesList
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return PopularMoviesViewHolder(
-            layoutInflater.inflate(
-                R.layout.item_grid_list,
-                parent,
-                false
-            )
+            layoutInflater.inflate(R.layout.item_grid_list, parent, false)
         )
     }
 

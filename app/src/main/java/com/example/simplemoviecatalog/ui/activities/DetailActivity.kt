@@ -19,6 +19,7 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
 
+    //by lazy fue sugerencia de ChatGPT, antes no lo tenia.
     private val favoritesAdapter: FavoritesAdapter by lazy {
         FavoritesAdapter(emptyList())
     }
@@ -35,7 +36,9 @@ class DetailActivity : AppCompatActivity() {
         binding.btnDeleteToFavorites.setOnClickListener { deleteFromFavorites() }
 
     }
-
+    //Recuperamos los datos del MainActivity
+    //.getParcelable esta deprecado y no se actualmente que se utiliza como reemplazo
+    //el problema del adaptador puede venir de aca?
     private fun getMovies() {
         val movie = intent.extras?.getParcelable<DomainModel>("movie")
         movie?.let {
@@ -55,7 +58,7 @@ class DetailActivity : AppCompatActivity() {
             favoritesViewModel.verifyLiveData.observe(this) { isFavorite ->
                 if (isFavorite) {
                     binding.btnAddToFavorites.isEnabled = false
-                    Toast.makeText(this,"La película ${it.title} ya está en favoritos.",
+                    Toast.makeText(this,"${it.title} se encuentra en favoritos.",
                         Toast.LENGTH_SHORT).show()
                 } else {
                     addToFavorites(it)
@@ -64,7 +67,6 @@ class DetailActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun addToFavorites(movie:DomainModel) {
         val movie = createMovieInstance(movie)
@@ -76,10 +78,14 @@ class DetailActivity : AppCompatActivity() {
     }
 
     //deberia eliminar y actualizar la lista de favoritos
+    //el problema deberia estar aca
     private fun deleteFromFavorites() {
+        //tal vez en esta variable
+        //tal vez esta pasando un null
         val movie = intent.extras?.getParcelable<DomainModel>("movie")
         movie?.let {
             val favoritesMovie = createMovieInstance(movie)
+            //en alguna de estas dos funciones
             favoritesViewModel.deleteFavoriteMovie(favoritesMovie)
             favoritesAdapter.removeFavorite(favoritesMovie)
             Toast.makeText(this, "Se ha eliminado de favoritos.", Toast.LENGTH_SHORT).show()

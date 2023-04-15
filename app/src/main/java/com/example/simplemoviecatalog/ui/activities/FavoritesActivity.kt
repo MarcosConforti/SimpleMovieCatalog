@@ -18,6 +18,7 @@ class FavoritesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFavoritesBinding
 
+    //segun ChatGPT, al agregar el lazy aca y en DetailActivity, era mejor para actualizar el adapter
     private val favoritesAdapter: FavoritesAdapter by lazy {
         FavoritesAdapter(emptyList())
     }

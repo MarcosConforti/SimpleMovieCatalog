@@ -42,8 +42,6 @@ class MoviesRepository @Inject constructor(
 
     private suspend fun insertMovies(movies: List<MoviesEntities>) = moviesDao.insertAll(movies)
 
-
     private suspend fun cleanList() = moviesDao.deleteAllMovies()
-
 
 }

@@ -20,7 +20,6 @@ class FavoritesRepository @Inject constructor(
         return if (favorite.isNotEmpty()) {
             favorite.map { it.toDomainFavoritesModel() }
         } else {
-            Log.d("FavoritesRepository", "Lista de favoritos actualizada: $favorite") //Agregar esta línea
             emptyList()
         }
     }
