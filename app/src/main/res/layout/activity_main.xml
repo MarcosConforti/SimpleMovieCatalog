@@ -29,6 +29,11 @@
         style="@style/floatingActionButtonStyle"
         android:clickable="true"
         android:enabled="true"
+        app:backgroundTint="@color/movie_voteAverage_color"
+        app:layout_constraintVertical_bias="0.97"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/btn_star_big_on" />

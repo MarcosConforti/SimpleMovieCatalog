@@ -17,12 +17,8 @@ class PopularMoviesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return PopularMoviesViewHolder(
-            layoutInflater.inflate(
-                R.layout.item_grid_list,
-                parent,
-                false
-            )
+        return PopularMoviesViewHolder(layoutInflater.inflate
+            (R.layout.item_grid_list, parent, false)
         )
     }
 

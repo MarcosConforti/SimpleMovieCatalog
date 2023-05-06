@@ -1,6 +1,7 @@
 package com.example.simplemoviecatalog.ui.activities
 
 import android.os.Bundle
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_favorites.*
 
 @AndroidEntryPoint
-class FavoritesActivity : AppCompatActivity() {
+class FavoritesActivity : AppCompatActivity(),SearchView.OnQueryTextListener {
 
     private lateinit var binding: ActivityFavoritesBinding
 
@@ -28,6 +29,7 @@ class FavoritesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoritesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.searchView.setOnQueryTextListener(this)
         configRecycler()
         configObservers()
     }
@@ -52,5 +54,14 @@ class FavoritesActivity : AppCompatActivity() {
                 Toast.makeText(this, "no se actualizo la lista", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    override fun onQueryTextSubmit(text: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(text: String?): Boolean {
+        favoritesAdapter.filter.filter(text)
+        return false
     }
 }

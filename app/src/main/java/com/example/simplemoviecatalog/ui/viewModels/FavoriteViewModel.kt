@@ -1,6 +1,5 @@
 package com.example.simplemoviecatalog.ui.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -57,7 +56,6 @@ class FavoriteViewModel @Inject constructor(
     fun deleteFavoriteMovie(favorite:DomainFavoritesModel) {
         viewModelScope.launch {
             deleteFavoriteUseCase.removeToFavorites(favorite)
-            Log.d("DEBUG", "VIEWMODEL called with movie = $favorite")
         }
     }
     //funcion que verifica si es favorito

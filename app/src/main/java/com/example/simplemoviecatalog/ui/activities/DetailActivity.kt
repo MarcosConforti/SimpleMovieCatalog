@@ -1,15 +1,12 @@
 package com.example.simplemoviecatalog.ui.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.example.simplemoviecatalog.databinding.ActivityDetailBinding
 import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
-import com.example.simplemoviecatalog.ui.adapters.favorite.FavoritesAdapter
 import com.example.simplemoviecatalog.ui.viewModels.FavoriteViewModel
 import com.example.simplemoviecatalog.utils.Constants
 import com.squareup.picasso.Picasso
@@ -58,6 +55,7 @@ class DetailActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT).show()
             } else {
                 addToFavorites()
+                finish()
                 binding.btnAddToFavorites.isEnabled = true //establece en verdadero al agregar una pelicula
             }
         }
@@ -86,6 +84,7 @@ class DetailActivity : AppCompatActivity() {
                 ).show()
             }
         }
+        finish()
     }
 }
 
