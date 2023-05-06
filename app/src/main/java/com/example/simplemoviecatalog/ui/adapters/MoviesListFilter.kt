@@ -1,3 +1,4 @@
+
 package com.example.simplemoviecatalog.ui.adapters
 
 import android.widget.Filter

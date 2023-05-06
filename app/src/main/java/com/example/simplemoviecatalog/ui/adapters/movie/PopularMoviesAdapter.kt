@@ -7,26 +7,18 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemoviecatalog.R
 import com.example.simplemoviecatalog.domain.model.DomainModel
-import com.example.simplemoviecatalog.ui.adapters.MoviesListFilter
 
-//Verificar por que no actualiza la el recycler al momento de eliminar un caracter
 class PopularMoviesAdapter(
     private var popularMoviesList: List<DomainModel>,
     private var onClickMoviesListener: OnClickMoviesListener?
 ) : RecyclerView.Adapter<PopularMoviesViewHolder>(), Filterable {
 
-    private val filter = MoviesListFilter(this)
     var filteredPopularMoviesList: List<DomainModel> = emptyList()
-
-    //esto fue idea de ChatGPT
-    init {
-        filteredPopularMoviesList = popularMoviesList
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return PopularMoviesViewHolder(
-            layoutInflater.inflate(R.layout.item_grid_list, parent, false)
+        return PopularMoviesViewHolder(layoutInflater.inflate
+            (R.layout.item_grid_list, parent, false)
         )
     }
 
@@ -44,6 +36,25 @@ class PopularMoviesAdapter(
         notifyDataSetChanged()
     }
 
-    override fun getFilter(): Filter = filter
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val filteredList = if (constraint.isNullOrEmpty()) {
+                    popularMoviesList
+                } else {
+                    popularMoviesList.filter { it.title.contains(constraint, true) }
+                }
+                val filterResults = FilterResults()
+                filterResults.values = filteredList
+                return filterResults
+            }
 
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                @Suppress("UNCHECKED_CAST")
+                filteredPopularMoviesList = results?.values as List<DomainModel>?
+                    ?: emptyList()
+                notifyDataSetChanged()
+            }
+        }
+    }
 }

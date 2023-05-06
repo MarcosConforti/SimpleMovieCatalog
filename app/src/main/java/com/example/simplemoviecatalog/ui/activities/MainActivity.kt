@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simplemoviecatalog.databinding.ActivityMainBinding
 import com.example.simplemoviecatalog.domain.NetworkState
+import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
 import com.example.simplemoviecatalog.domain.model.DomainModel
 import com.example.simplemoviecatalog.ui.adapters.movie.OnClickMoviesListener
 import com.example.simplemoviecatalog.ui.adapters.movie.PopularMoviesAdapter
@@ -70,7 +71,13 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
 
     override fun onMoviesClicked(movie: DomainModel) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("movie", movie)
+        intent.putExtra("movie", DomainFavoritesModel(
+            title = movie.title,
+            overview = movie.overview,
+            releaseDate = movie.releaseDate,
+            voteAverage = movie.voteAverage,
+            image = movie.image
+        ))
         startActivity(intent)
     }
 
