@@ -7,7 +7,7 @@ import com.example.simplemoviecatalog.R
 import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
 
 class FavoritesAdapter(
-    private var favoritesList: List<DomainFavoritesModel>,
+    private var favoritesList: List<DomainFavoritesModel>
 ) : RecyclerView.Adapter<FavoritesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
@@ -26,15 +26,4 @@ class FavoritesAdapter(
         favoritesList = newFavoriteList
         notifyDataSetChanged()
     }
-
-    //ChatGPT me recomendo hacer esta funcion que actualiza la lista.Pero no "funciona"
-    fun removeFavorite(favorite: DomainFavoritesModel) {
-        favoritesList.indexOf(favorite)
-        val index = favoritesList.indexOf(favorite)
-        if (index >= 0) {
-            favoritesList = favoritesList.filter { it != favorite }
-            notifyItemRemoved(index)
-        }
-    }
-
 }

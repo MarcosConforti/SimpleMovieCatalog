@@ -19,5 +19,5 @@ interface FavoritesDao {
     suspend fun deleteFromFavorites(movie:FavoritesEntities)
 
     @Query("SELECT EXISTS(SELECT * FROM favorites_table WHERE title = :title)")
-    suspend fun verificarSiPeliculaEsFavorita(title:String): Boolean
+    suspend fun isChecked(title:String): Boolean
 }

@@ -1,10 +1,12 @@
 package com.example.simplemoviecatalog.ui.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import com.example.simplemoviecatalog.databinding.ActivityDetailBinding
 import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
 import com.example.simplemoviecatalog.ui.adapters.favorite.FavoritesAdapter
@@ -18,73 +20,73 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
 
-    private val favoritesAdapter: FavoritesAdapter by lazy {
-        FavoritesAdapter(emptyList())
-    }
     private lateinit var movie: DomainFavoritesModel
 
-    private val favoritesViewModel: FavoriteViewModel by viewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        movie =  intent.extras?.getParcelable("movie")!!
+        movie = intent.extras?.getParcelable("movie")!!
         getMovies()
-        binding.btnAddToFavorites.setOnClickListener { verifyFavorites() }
-        binding.btnDeleteToFavorites.setOnClickListener { deleteFromFavorites() }
+        binding.btnAddToFavorites.setOnClickListener { isChecked() }
+        binding.btnDeleteToFavorites.setOnClickListener { deleteFromFavorites(movie) }
 
     }
+
     //Recupero los datos del MainActivity
     private fun getMovies() {
-        movie.let {
-            binding.tvTitle.text = it.title
-            binding.tvOverview.text = it.overview
-            binding.tvReleaseDate.text = it.releaseDate
-            binding.tvVoteAverage.text = it.voteAverage
-            Picasso.get().load(Constants.IMAGE_BASE + it.image).into(binding.ivImage)
-            binding.progressBar.isVisible = false
-        }
+        binding.tvTitle.text = movie.title
+        binding.tvOverview.text = movie.overview
+        binding.tvReleaseDate.text = movie.releaseDate
+        binding.tvVoteAverage.text = movie.voteAverage
+        Picasso.get().load(Constants.IMAGE_BASE + movie.image).into(binding.ivImage)
+        binding.progressBar.isVisible = false
+
     }
+
     //Verifica si la pelicula ya se encuentra en la base de datos y desabilita el boton
-    private fun verifyFavorites() {
-        movie.let {
-            favoritesViewModel.verifyFavorite(it.title)
-            favoritesViewModel.verifyLiveData.observe(this) { isFavorite ->
-                if (isFavorite) {
-                    binding.btnAddToFavorites.isEnabled = false
-                    Toast.makeText(this,"La película ${it.title} ya está en favoritos.",
-                        Toast.LENGTH_SHORT).show()
-                } else {
-                    addToFavorites(it)
-                    binding.btnAddToFavorites.isEnabled = false
-                }
+    private fun isChecked() {
+        favoriteViewModel.isChecked(movie.title)
+        favoriteViewModel.verifyLiveData.observe(this) { isFavorite ->
+            if (isFavorite) {
+                binding.btnAddToFavorites.isEnabled = false
+                Toast.makeText(
+                    this, "La película ${movie.title} ya está en favoritos.",
+                    Toast.LENGTH_SHORT).show()
+            } else {
+                addToFavorites()
+                binding.btnAddToFavorites.isEnabled = true //establece en verdadero al agregar una pelicula
             }
         }
     }
 
-
-    private fun addToFavorites(movie:DomainFavoritesModel) {
-        favoritesViewModel.addToFavorites(movie)
-        favoritesViewModel.getFavorites()
+    private fun addToFavorites() {
+        favoriteViewModel.addToFavorites(movie)
         Toast.makeText(this, "Se ha agregado a favoritos.",
             Toast.LENGTH_SHORT).show()
-        finish()
+
     }
 
     //deberia eliminar y actualizar la lista de favoritos
-    private fun deleteFromFavorites() {
-        movie.let {
-            //Borra una pelicula de la base de datos
-            favoritesViewModel.deleteFavoriteMovie(movie)
-            //Saca y actualiza el adapter...supuestamente
-            favoritesAdapter.removeFavorite(movie)
-            Toast.makeText(this, "Se ha eliminado de favoritos.", Toast.LENGTH_SHORT).show()
-            //Al eliminar una pelicula, desabilita el boton
-            binding.btnAddToFavorites.isEnabled = true
-            finish()
+    private fun deleteFromFavorites(movie: DomainFavoritesModel) {
+        favoriteViewModel.getFavorites()
+        favoriteViewModel.favoriteLiveData.observe(this) { favoritesList ->
+            val movieInFavorites = favoritesList.find { it.title == movie.title }
+            if (movieInFavorites != null) {
+                favoriteViewModel.deleteFavoriteMovie(movieInFavorites)
+                Toast.makeText(this, "Se ha eliminado de favoritos.", Toast.LENGTH_SHORT).show()
+                binding.btnAddToFavorites.isEnabled = true
+            } else {
+                Toast.makeText(
+                    this, "La película ${movie.title} no se encuentra en favoritos.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
-
 }
+
+
