@@ -14,6 +14,6 @@ data class DomainModel(
     val overview:String,
     val image: String
 ):Parcelable
-//funcion de extension para realizar los mapers
+//funciones de extension para realizar los mapers
 fun MoviesModel.toDomainMovie() = DomainModel(id.length,title, voteAverage,releaseDate,overview,image)
 fun MoviesEntities.toDomainMovie() = DomainModel(id,title, voteAverage,releaseDate,overview, image)
