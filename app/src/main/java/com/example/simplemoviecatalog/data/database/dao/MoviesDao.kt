@@ -23,6 +23,4 @@ interface MoviesDao {
     @Query("DELETE FROM movies_table")
     suspend fun deleteAllMovies()
 
-    @Query("SELECT * FROM movies_table WHERE title LIKE :query")
-    suspend fun searchMovie(query:String?):List<MoviesEntities>
 }
