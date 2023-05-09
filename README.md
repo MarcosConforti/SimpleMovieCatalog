@@ -40,16 +40,16 @@ It consists of three activities:
 <table>
   <tr>
     <td>
-    <img src="https://github.com/MarcosConforti/SimpleMovieCatalog/blob/master/app/src/main/res/drawable/mvvmcleanarchitecture.png" alt="MVVM CA"  height="400">
+    <img src="https://github.com/MarcosConforti/SimpleMovieCatalog/blob/master/app/src/main/res/drawable/mvvmcleanarchitecture.png" alt="MVVM CA"  height="250">
     </td>
     <td>
-    <img src="https://github.com/MarcosConforti/SimpleMovieCatalog/blob/master/app/src/main/res/drawable/data.png" alt="Data"  height="550">
+    <img src="https://github.com/MarcosConforti/SimpleMovieCatalog/blob/master/app/src/main/res/drawable/data.png" alt="Data"  height="250">
     </td>
     <td>
-     <img src="https://github.com/MarcosConforti/SimpleMovieCatalog/blob/master/app/src/main/res/drawable/domain.png" alt="Domain"  height="550">
+     <img src="https://github.com/MarcosConforti/SimpleMovieCatalog/blob/master/app/src/main/res/drawable/domain.png" alt="Domain"  height="250">
     </td>
     <td>
-     <img src="https://github.com/MarcosConforti/SimpleMovieCatalog/blob/master/app/src/main/res/drawable/ui.png" alt="UI"  height="550">
+     <img src="https://github.com/MarcosConforti/SimpleMovieCatalog/blob/master/app/src/main/res/drawable/ui.png" alt="UI"  height="250">
     </td> 
   </tr>
 </table>
