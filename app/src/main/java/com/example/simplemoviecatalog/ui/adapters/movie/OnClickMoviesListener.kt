@@ -1,6 +1,5 @@
-package com.example.simplemoviecatalog.ui.recyclerViews
+package com.example.simplemoviecatalog.ui.adapters.movie
 
-import com.example.simplemoviecatalog.data.model.MoviesModel
 import com.example.simplemoviecatalog.domain.model.DomainModel
 
 interface OnClickMoviesListener {

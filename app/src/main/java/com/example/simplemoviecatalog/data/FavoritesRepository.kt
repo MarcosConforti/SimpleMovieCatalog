@@ -2,18 +2,31 @@ package com.example.simplemoviecatalog.data
 
 import com.example.simplemoviecatalog.data.database.dao.FavoritesDao
 import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
+import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
+import com.example.simplemoviecatalog.domain.model.toDomainFavoritesModel
+import com.example.simplemoviecatalog.domain.model.toFavoritesEntities
 import javax.inject.Inject
 
-//esta clase funciona para seleccionar de donde el programa tomara las peliculas, si de la api o db
 class FavoritesRepository @Inject constructor(
     private val favoritesDao: FavoritesDao
 ) {
 
-    suspend fun addToFavorites(favorites: FavoritesEntities) =
-        favoritesDao.insertFavorites(favorites)
+    suspend fun addToFavorites(favorites: DomainFavoritesModel) {
+        favoritesDao.insertFavorites(favorites.toFavoritesEntities())
+    }
 
-    suspend fun getFavorite() = favoritesDao.getFavorites()
+    suspend fun getFavorite(): List<DomainFavoritesModel> {
+        val favorite = favoritesDao.getFavorites()
+        return if (favorite.isNotEmpty()) {
+            favorite.map { it.toDomainFavoritesModel() }
+        } else {
+            emptyList()
+        }
+    }
 
-    suspend fun cleanList(id: String) = favoritesDao.deleteFromFavorites(id)
+    suspend fun cleanList(favorites: DomainFavoritesModel) =
+        favoritesDao.deleteFromFavorites(favorites.toFavoritesEntities())
 
+    suspend fun isChecked(title: String): Boolean =
+         favoritesDao.isChecked(title)
 }

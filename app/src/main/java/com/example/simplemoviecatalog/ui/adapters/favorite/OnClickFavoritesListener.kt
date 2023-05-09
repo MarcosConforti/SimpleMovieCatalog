@@ -1,7 +1,6 @@
-package com.example.simplemoviecatalog.ui.recyclerViews
+package com.example.simplemoviecatalog.ui.adapters.favorite
 
 import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
-import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
 
 interface OnClickFavoritesListener {
 

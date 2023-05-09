@@ -5,6 +5,7 @@ import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
 import com.example.simplemoviecatalog.data.model.FavoritesModel
 import kotlinx.android.parcel.Parcelize
 
+//la anotacion es necesaria?
 @Parcelize
 data class DomainFavoritesModel(
     var id:Int = 0,
@@ -14,6 +15,8 @@ data class DomainFavoritesModel(
     val overview:String,
     val image: String
 ):Parcelable
-//funcion de extension para realizar los mapers
-fun FavoritesModel.toDomainFavorites() = DomainFavoritesModel(id.length,title, voteAverage,releaseDate,overview,image)
-fun FavoritesEntities.toDomainFavorites() = DomainFavoritesModel(id,title, voteAverage,releaseDate,overview, image)
+//funciones de extension para realizar los mapers
+fun FavoritesEntities.toDomainFavoritesModel() =
+    DomainFavoritesModel(id, title, voteAverage, releaseDate, overview, image)
+fun DomainFavoritesModel.toFavoritesEntities() =
+    FavoritesEntities(id, title, releaseDate, voteAverage, overview, image)
