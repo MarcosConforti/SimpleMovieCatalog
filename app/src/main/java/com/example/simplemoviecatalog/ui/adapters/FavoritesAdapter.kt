@@ -1,4 +1,4 @@
-package com.example.simplemoviecatalog.ui.adapters.favorite
+package com.example.simplemoviecatalog.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,29 +6,28 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemoviecatalog.R
-import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
-import com.example.simplemoviecatalog.domain.model.DomainModel
+import com.example.simplemoviecatalog.ui.model.UIModel
 
 class FavoritesAdapter(
-    private var favoritesList: List<DomainFavoritesModel>
-) : RecyclerView.Adapter<FavoritesViewHolder>(), Filterable {
+    private var favoritesList: List<UIModel>
+) : RecyclerView.Adapter<BaseViewHolder>(), Filterable {
 
-    var filteredFavoriteList: List<DomainFavoritesModel> = emptyList()
+    var filteredFavoriteList: List<UIModel> = favoritesList
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return FavoritesViewHolder(layoutInflater.inflate
+        return BaseViewHolder(layoutInflater.inflate
             (R.layout.item_grid_list, parent, false))
     }
 
-    override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val item = filteredFavoriteList[position]
         holder.render(item)
     }
 
     override fun getItemCount(): Int = filteredFavoriteList.size
 
-    fun setFavoritesList(newFavoriteList: List<DomainFavoritesModel>) {
+    fun setFavoritesList(newFavoriteList: List<UIModel>) {
         favoritesList = newFavoriteList
         filteredFavoriteList = newFavoriteList
         notifyDataSetChanged()
@@ -49,8 +48,9 @@ class FavoritesAdapter(
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 @Suppress("UNCHECKED_CAST")
-                filteredFavoriteList = results?.values as List<DomainFavoritesModel>?
+                filteredFavoriteList = results?.values as List<UIModel>?
                     ?: emptyList()
+                favoritesList = filteredFavoriteList  // Agrega esta línea para mantener la lista completa
                 notifyDataSetChanged()
             }
         }

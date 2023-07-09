@@ -1,23 +1,26 @@
 package com.example.simplemoviecatalog.ui.activities
 
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import com.example.simplemoviecatalog.R
 import com.example.simplemoviecatalog.databinding.ActivityDetailBinding
-import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
+import com.example.simplemoviecatalog.ui.model.UIModel
 import com.example.simplemoviecatalog.ui.viewModels.FavoriteViewModel
 import com.example.simplemoviecatalog.utils.Constants
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
 
-    private lateinit var movie: DomainFavoritesModel
+    private lateinit var movie: UIModel
 
     private val favoriteViewModel: FavoriteViewModel by viewModels()
 
@@ -29,7 +32,6 @@ class DetailActivity : AppCompatActivity() {
         movie = intent.extras?.getParcelable("movie")!!
         getMovies()
         binding.btnAddToFavorites.setOnClickListener { isChecked() }
-        binding.btnDeleteToFavorites.setOnClickListener { deleteFromFavorites(movie) }
 
     }
 
@@ -39,53 +41,33 @@ class DetailActivity : AppCompatActivity() {
         binding.tvOverview.text = movie.overview
         binding.tvReleaseDate.text = movie.releaseDate
         binding.tvVoteAverage.text = movie.voteAverage
-        Picasso.get().load(Constants.IMAGE_BASE + movie.image).into(binding.ivImage)
-        binding.progressBar.isVisible = false
-
+        binding.ivBigImage.scaleType = ImageView.ScaleType.FIT_XY
+        Picasso.get().load(Constants.IMAGE_BASE + movie.image).into(binding.ivBigImage)
     }
 
-    //Verifica si la pelicula ya se encuentra en la base de datos y desabilita el boton
     private fun isChecked() {
-        favoriteViewModel.isChecked(movie.title)
-        favoriteViewModel.verifyLiveData.observe(this) { isFavorite ->
+        lifecycleScope.launch {
+            val isFavorite = favoriteViewModel.isChecked(movie.id.toString())
             if (isFavorite) {
-                binding.btnAddToFavorites.isEnabled = false
-                Toast.makeText(
-                    this, "La película ${movie.title} ya está en favoritos.",
-                    Toast.LENGTH_SHORT).show()
+                removeFromFavorites(movie.id.toString())
             } else {
                 addToFavorites()
-                finish()
-                binding.btnAddToFavorites.isEnabled = true //establece en verdadero al agregar una pelicula
             }
         }
     }
 
     private fun addToFavorites() {
         favoriteViewModel.addToFavorites(movie)
-        Toast.makeText(this, "Se ha agregado a favoritos.",
+        binding.btnAddToFavorites.setImageResource(R.drawable.ic_favorite_red)
+        Toast.makeText(this, movie.title + " " + Constants.ADD_TO_FAVORITES,
             Toast.LENGTH_SHORT).show()
-
+        finish()
     }
-
-    //deberia eliminar y actualizar la lista de favoritos
-    private fun deleteFromFavorites(movie: DomainFavoritesModel) {
-        favoriteViewModel.getFavorites()
-        favoriteViewModel.favoriteLiveData.observe(this) { favoritesList ->
-            val movieInFavorites = favoritesList.find { it.title == movie.title }
-            if (movieInFavorites != null) {
-                favoriteViewModel.deleteFavoriteMovie(movieInFavorites)
-                Toast.makeText(this, "Se ha eliminado de favoritos.", Toast.LENGTH_SHORT).show()
-                binding.btnAddToFavorites.isEnabled = true
-            } else {
-                Toast.makeText(
-                    this, "La película ${movie.title} no se encuentra en favoritos.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
+    private fun removeFromFavorites(id: String) {
+        favoriteViewModel.deleteFavoriteMovie(id)
+        binding.btnAddToFavorites.setImageResource(R.drawable.ic_favorite_border)
+        Toast.makeText(this, Constants.REMOVE_TO_FAVORITES,
+            Toast.LENGTH_SHORT).show()
         finish()
     }
 }
-
-
