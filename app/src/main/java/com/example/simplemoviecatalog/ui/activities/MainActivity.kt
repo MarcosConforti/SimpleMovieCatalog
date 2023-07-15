@@ -1,4 +1,4 @@
-package com.example.simplemoviecatalog.ui
+package com.example.simplemoviecatalog.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,14 +7,17 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simplemoviecatalog.databinding.ActivityMainBinding
-import com.example.simplemoviecatalog.domain.NetworkState
-import com.example.simplemoviecatalog.domain.model.DomainModel
-import com.example.simplemoviecatalog.ui.recyclerViews.OnClickMoviesListener
-import com.example.simplemoviecatalog.ui.recyclerViews.PopularMoviesAdapter
+import com.example.simplemoviecatalog.ui.UIState
+import com.example.simplemoviecatalog.ui.adapters.OnClickMoviesListener
+import com.example.simplemoviecatalog.ui.adapters.PopularMoviesAdapter
+import com.example.simplemoviecatalog.ui.model.UIModel
 import com.example.simplemoviecatalog.ui.viewModels.MoviesViewModel
+import com.example.simplemoviecatalog.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQueryTextListener {
@@ -37,8 +40,6 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
         configRecycler()
         configObservers()
         onClickFavorites()
-
-
     }
 
     private fun configRecycler() {
@@ -49,36 +50,39 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
     }
 
     private fun configObservers() {
-        moviesViewModel.getMoviesLiveData.observe(this) { movieState ->
-
-            if (movieState is NetworkState.Success) {
-                binding.progressBar.isVisible = false
-                popularMoviesAdapter.setPopularMoviesList(movieState.data.popular)
-            } else {
-                binding.progressBar.isVisible = false
-                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            moviesViewModel.getMoviesStateFlow.collect{movieState->
+                when(movieState){
+                    UIState.Loading ->{
+                        binding.progressBar.isVisible = true
+                    }
+                    is UIState.Success -> {
+                        binding.progressBar.isVisible = false
+                        popularMoviesAdapter.setPopularMoviesList(movieState.data.popular)
+                    }
+                    is UIState.Error ->{
+                        binding.progressBar.isVisible = false
+                        Toast.makeText(this@MainActivity, Constants.GENERIC_ERROR,
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
 
-    override fun onMoviesClicked(movie: DomainModel) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("image", movie.image)
-        intent.putExtra("overView", movie.overview)
-        intent.putExtra("title", movie.title)
-        intent.putExtra("releaseDate", movie.releaseDate)
-        intent.putExtra("voteAverage", movie.voteAverage)
-        startActivity(intent)
-    }
-
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
-
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
         popularMoviesAdapter.filter.filter(newText)
         return false
+    }
+
+    override fun onMoviesClicked(movie: UIModel) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("movie",movie)
+        startActivity(intent)
     }
 
     private fun onClickFavorites() {
@@ -87,5 +91,4 @@ class MainActivity : AppCompatActivity(), OnClickMoviesListener, SearchView.OnQu
             startActivity(intent)
         }
     }
-
 }

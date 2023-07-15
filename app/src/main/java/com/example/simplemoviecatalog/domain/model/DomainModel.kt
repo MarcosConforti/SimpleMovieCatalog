@@ -1,6 +1,7 @@
 package com.example.simplemoviecatalog.domain.model
 
 import android.os.Parcelable
+import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
 import com.example.simplemoviecatalog.data.database.entities.MoviesEntities
 import com.example.simplemoviecatalog.data.model.MoviesModel
 import kotlinx.android.parcel.Parcelize
@@ -14,6 +15,12 @@ data class DomainModel(
     val overview:String,
     val image: String
 ):Parcelable
-//funcion de extension para realizar los mapers
+//funciones de extension para realizar los mapers
 fun MoviesModel.toDomainMovie() = DomainModel(id.length,title, voteAverage,releaseDate,overview,image)
 fun MoviesEntities.toDomainMovie() = DomainModel(id,title, voteAverage,releaseDate,overview, image)
+
+fun FavoritesEntities.toDomainModel() =
+    DomainModel(id, title, voteAverage, releaseDate, overview, image)
+fun DomainModel.toFavoritesEntities() =
+    FavoritesEntities(id, title, releaseDate, voteAverage, overview, image)
+

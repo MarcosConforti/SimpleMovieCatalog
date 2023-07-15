@@ -12,6 +12,8 @@
     <color name="activity_movie_background">#181B47</color>
     <color name="card_background">#0C0E2C</color>
     <color name="movie_voteAverage_color">#D2DA2E</color>
+    <color name="addToFavorites_color">#1A700A</color>
+    <color name="deleteToFavorite_color">#6C0817</color>
 
 
 </resources>
