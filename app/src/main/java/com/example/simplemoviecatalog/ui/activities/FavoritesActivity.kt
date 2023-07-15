@@ -50,8 +50,6 @@ class FavoritesActivity : AppCompatActivity(),SearchView.OnQueryTextListener {
                    UIState.Loading -> {}//progressbar
                    is UIState.Success -> {
                        favoritesAdapter.setFavoritesList(favorites.data)
-                      Toast.makeText(this@FavoritesActivity,"no se ve la lista",
-                          Toast.LENGTH_SHORT).show()
                    }
                    is UIState.Error -> {
                       Toast.makeText(this@FavoritesActivity,
