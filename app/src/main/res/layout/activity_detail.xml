@@ -8,70 +8,115 @@
     android:background="@color/activity_movie_background"
     tools:context=".ui.activities.DetailActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/progressBarStyle"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/iv_bigImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        style="@style/scrollViewStyle"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/detail_info_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            style="@style/linearLayoutStyle">
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cv">
 
-            <ImageView
-                android:id="@+id/iv_image"
+            <LinearLayout
+                android:id="@+id/ll_image"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="10dp" />
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:hint="@string/title"
-                style="@style/detailTextStyle"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/detailTextStyle"
+                    android:gravity="center"
+                    android:hint="@string/title"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_releaseDate"
-                android:hint="@string/releaseDate"
-                style="@style/detailTextStyle"
-                android:textSize="25sp"
-                android:textStyle="normal" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_voteAverage"
-                style="@style/voteAverageStyle"/>
+                    <TextView
+                        android:id="@+id/tv_voteAverage"
+                        android:layout_height="24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="0.1"
+                        android:gravity="center"
+                        android:layout_margin="10dp"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/voteAverage"
+                        android:textColor="@color/white"
+                        android:background="@drawable/detail_tv_background"
+                        android:textSize="16sp"
+                        android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/tv_overview"
-                android:hint="@string/overview"
-                style="@style/detailTextStyle"
-                android:inputType="textMultiLine"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-            <Button
-                android:id="@+id/btn_addToFavorites"
-                style="@style/bottomStyle"
-                android:text="@string/add_to_favorites"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/addToFavorites_color"
-                app:cornerRadius="20dp"/>
-            <Button
-                android:id="@+id/btn_deleteToFavorites"
-                style="@style/bottomStyle"
-                android:backgroundTint="@color/deleteToFavorite_color"
-                app:cornerRadius="20dp"
-                android:textColor="@color/white"
-                android:text="@string/delete_to_favorites"/>
-        </LinearLayout>
-    </ScrollView>
+                    <TextView
+                        android:id="@+id/tv_releaseDate"
+                        android:layout_height="24dp"
+                        android:layout_weight="0.1"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_margin="10dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:hint="@string/releaseDate"
+                        android:text="@string/releaseDate"
+                        android:background="@drawable/detail_tv_background"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="normal" />
 
+                    <ImageButton
+                        android:id="@+id/btn_addToFavorites"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:layout_margin="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_favorite_border"
+                        android:background="@drawable/detail_tv_background"
+                        tools:ignore="ContentDescription" />
 
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_overview"
+                    style="@style/overviewDetailStyle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/detailStyle"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    android:layout_marginStart="10dp"
+                    android:text="Similar:"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_alternativeTitle"
+                    style="@style/recyclerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

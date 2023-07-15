@@ -1,4 +1,4 @@
-package com.example.simplemoviecatalog.ui.adapters.movie
+package com.example.simplemoviecatalog.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,23 +6,23 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemoviecatalog.R
-import com.example.simplemoviecatalog.domain.model.DomainModel
+import com.example.simplemoviecatalog.ui.model.UIModel
 
 class PopularMoviesAdapter(
-    private var popularMoviesList: List<DomainModel>,
+    private var popularMoviesList: List<UIModel>,
     private var onClickMoviesListener: OnClickMoviesListener?
-) : RecyclerView.Adapter<PopularMoviesViewHolder>(), Filterable {
+) : RecyclerView.Adapter<BaseViewHolder>(), Filterable {
 
-    var filteredPopularMoviesList: List<DomainModel> = emptyList()
+    var filteredPopularMoviesList: List<UIModel> = emptyList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return PopularMoviesViewHolder(layoutInflater.inflate
+        return BaseViewHolder(layoutInflater.inflate
             (R.layout.item_grid_list, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: PopularMoviesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val item = filteredPopularMoviesList[position]
         holder.render(item)
         holder.itemView.setOnClickListener { onClickMoviesListener?.onMoviesClicked(item) }
@@ -30,7 +30,7 @@ class PopularMoviesAdapter(
 
     override fun getItemCount(): Int = filteredPopularMoviesList.size
 
-    fun setPopularMoviesList(newMovieList: List<DomainModel>) {
+    fun setPopularMoviesList(newMovieList: List<UIModel>) {
         popularMoviesList = newMovieList
         filteredPopularMoviesList = newMovieList
         notifyDataSetChanged()
@@ -51,7 +51,7 @@ class PopularMoviesAdapter(
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 @Suppress("UNCHECKED_CAST")
-                filteredPopularMoviesList = results?.values as List<DomainModel>?
+                filteredPopularMoviesList = results?.values as List<UIModel>?
                     ?: emptyList()
                 notifyDataSetChanged()
             }

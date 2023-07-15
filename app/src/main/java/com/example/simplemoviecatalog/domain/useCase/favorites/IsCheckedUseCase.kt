@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class IsCheckedUseCase@Inject constructor(private val favoritesRepository: FavoritesRepository) {
 
-    suspend  fun verifyFavorite(title:String): Boolean {
-        return favoritesRepository.isChecked(title)
+    suspend  fun checkFavorite(id:String): Boolean {
+        return favoritesRepository.isChecked(id)
     }
 }

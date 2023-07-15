@@ -1,32 +1,35 @@
 package com.example.simplemoviecatalog.data
 
 import com.example.simplemoviecatalog.data.database.dao.FavoritesDao
-import com.example.simplemoviecatalog.data.database.entities.FavoritesEntities
-import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
-import com.example.simplemoviecatalog.domain.model.toDomainFavoritesModel
+import com.example.simplemoviecatalog.domain.NetworkState
+import com.example.simplemoviecatalog.domain.model.DomainModel
+import com.example.simplemoviecatalog.domain.model.toDomainModel
 import com.example.simplemoviecatalog.domain.model.toFavoritesEntities
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FavoritesRepository @Inject constructor(
     private val favoritesDao: FavoritesDao
 ) {
 
-    suspend fun addToFavorites(favorites: DomainFavoritesModel) {
+     fun getFavorite(): Flow<NetworkState<List<DomainModel>>> =
+        favoritesDao.getFavorites().map { favorites ->
+            if (favorites.isNotEmpty()){
+                NetworkState.Success(favorites.map { it.toDomainModel() })
+            }
+            else{
+                NetworkState.Success(emptyList())
+            }
+        }
+
+    suspend fun addToFavorites(favorites: DomainModel) {
         favoritesDao.insertFavorites(favorites.toFavoritesEntities())
     }
 
-    suspend fun getFavorite(): List<DomainFavoritesModel> {
-        val favorite = favoritesDao.getFavorites()
-        return if (favorite.isNotEmpty()) {
-            favorite.map { it.toDomainFavoritesModel() }
-        } else {
-            emptyList()
-        }
-    }
+    suspend fun cleanList(id: String) =
+        favoritesDao.deleteFromFavorites(id)
 
-    suspend fun cleanList(favorites: DomainFavoritesModel) =
-        favoritesDao.deleteFromFavorites(favorites.toFavoritesEntities())
-
-    suspend fun isChecked(title: String): Boolean =
-         favoritesDao.isChecked(title)
+    suspend fun isChecked(id: String): Boolean =
+        favoritesDao.checkFavorites(id)
 }
