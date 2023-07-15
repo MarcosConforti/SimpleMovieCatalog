@@ -5,21 +5,21 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simplemoviecatalog.databinding.ActivityFavoritesBinding
-import com.example.simplemoviecatalog.ui.adapters.favorite.FavoritesAdapter
+import com.example.simplemoviecatalog.ui.UIState
+import com.example.simplemoviecatalog.ui.adapters.FavoritesAdapter
 import com.example.simplemoviecatalog.ui.viewModels.FavoriteViewModel
+import com.example.simplemoviecatalog.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_favorites.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FavoritesActivity : AppCompatActivity(),SearchView.OnQueryTextListener {
 
     private lateinit var binding: ActivityFavoritesBinding
 
-    //segun ChatGPT, al agregar el lazy aca y en DetailActivity, era mejor para actualizar el adapter
     private val favoritesAdapter: FavoritesAdapter by lazy {
         FavoritesAdapter(emptyList())
     }
@@ -42,19 +42,24 @@ class FavoritesActivity : AppCompatActivity(),SearchView.OnQueryTextListener {
     }
 
     private fun configObservers() {
-        //Traigo los favoritos
-        favoritesViewModel.getFavorites()
-        //Observo los cambios en la lista y seteo el progressBar
-        favoritesViewModel.favoriteLiveData.observe(this, Observer { favorites ->
-            if (favorites.isNotEmpty()) {
-                progressBar.isVisible = false
-                favoritesAdapter.setFavoritesList(favorites)
-            } else {
-                progressBar.isVisible = true
-                favoritesAdapter.setFavoritesList(emptyList())
-                Toast.makeText(this, "no se actualizo la lista", Toast.LENGTH_SHORT).show()
-            }
-        })
+       lifecycleScope.launch {
+           favoritesViewModel.getFavorites()
+           favoritesViewModel.favoriteUIState.collect{
+               favorites ->
+               when(favorites){
+                   UIState.Loading -> {}//progressbar
+                   is UIState.Success -> {
+                       favoritesAdapter.setFavoritesList(favorites.data)
+                      Toast.makeText(this@FavoritesActivity,"no se ve la lista",
+                          Toast.LENGTH_SHORT).show()
+                   }
+                   is UIState.Error -> {
+                      Toast.makeText(this@FavoritesActivity,
+                          Constants.GENERIC_ERROR, Toast.LENGTH_SHORT).show()
+                   }
+               }
+           }
+       }
     }
 
     override fun onQueryTextSubmit(text: String?): Boolean {
