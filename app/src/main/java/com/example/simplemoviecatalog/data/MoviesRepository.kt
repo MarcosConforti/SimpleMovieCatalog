@@ -23,37 +23,4 @@ class MoviesRepository @Inject constructor(
             mapToDomain = { it.toDomainMovie() }
         )
     }
-
-    //Ninguna funcion suspendida sera Privada, ya que tendremos que testearlas
-
-    /*fun getPopularMoviesFromApi(): Flow<NetworkState<List<DomainModel>>> {
-        //recupero las peliculas
-       return flow {
-            //recupero las peliculas
-            try {
-                var moviesApi = api.getPopularMovies().results
-                if (moviesApi.isNotEmpty()) {
-                    cleanList()
-                    insertMovies(moviesApi.map { it.toMovieDataBase() })
-                    emit(NetworkState.Success(moviesApi.map { it.toDomainMovie() }))
-                } else {
-                    //si esta vacio, que recupere los datos de la db
-                    val moviesDb = getMoviesFromDataBase()
-                    emit(NetworkState.Success(moviesDb))
-                }
-            } catch (e: Throwable) {
-                emit(NetworkState.Error(e))
-            }
-        }
-    }
-
-     suspend fun getMoviesFromDataBase(): List<DomainModel> {
-        val response = moviesDao.getAllMovies()
-        return response.map { it.toDomainMovie() }
-    }
-
-     suspend fun insertMovies(movies: List<MoviesEntities>) = moviesDao.insertAll(movies)
-
-     suspend fun cleanList() = moviesDao.deleteAllMovies()
-*/
 }

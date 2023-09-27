@@ -1,11 +1,14 @@
 package com.example.simplemoviecatalog.domain.useCase.favorites
 
 import com.example.simplemoviecatalog.data.FavoritesRepository
-import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
+import com.example.simplemoviecatalog.domain.NetworkState
+import com.example.simplemoviecatalog.domain.model.DomainModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -27,7 +30,7 @@ class DeleteFavoriteUseCaseTest{
         runBlocking {
             //Given
             val favoriteList =
-                DomainFavoritesModel(
+                DomainModel(
                     1,
                     "title",
                     "voteAverage",
@@ -37,9 +40,9 @@ class DeleteFavoriteUseCaseTest{
                 )
             coEvery { repository.getFavorite() }
             //When
-             deleteFavoriteUseCase.removeToFavorites(favoriteList)
+             deleteFavoriteUseCase.removeToFavorites(favoriteList.toString())
             //Then
-            coVerify(exactly = 1) { repository.cleanList(favoriteList) }
+            coVerify(exactly = 1) { repository.cleanList(favoriteList.toString()) }
         }
     }
 
@@ -47,14 +50,15 @@ class DeleteFavoriteUseCaseTest{
     fun `when favorites are empty`() {
         runBlocking {
             // Given
-            coEvery { repository.getFavorite() } returns emptyList()
+            val empty: Flow<NetworkState<List<DomainModel>>> = flowOf()
+            coEvery { repository.getFavorite() } returns empty
 
             // When
             val response = repository.getFavorite()
 
             // Then
             coVerify(exactly = 1) { repository.getFavorite() }
-            assert(response == emptyList<DomainFavoritesModel>())
+            assert(response == empty)
         }
     }
 }

@@ -1,15 +1,17 @@
 package com.example.simplemoviecatalog.domain.useCase.favorites
 
 import com.example.simplemoviecatalog.data.FavoritesRepository
-import com.example.simplemoviecatalog.domain.model.DomainFavoritesModel
+import com.example.simplemoviecatalog.domain.NetworkState
+import com.example.simplemoviecatalog.domain.model.DomainModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-
 
 class GetFavoriteUseCaseTest {
 
@@ -29,7 +31,7 @@ class GetFavoriteUseCaseTest {
         runBlocking {
             //Given
             val favoriteList = listOf(
-                DomainFavoritesModel(
+                DomainModel(
                     1,
                     "title",
                     "voteAverage",
@@ -38,12 +40,13 @@ class GetFavoriteUseCaseTest {
                     "image"
                 )
             )
-            coEvery { repository.getFavorite() } returns favoriteList
+            val success: Flow<NetworkState<List<DomainModel>>> = flowOf(NetworkState.Success(favoriteList))
+            coEvery { repository.getFavorite() } returns success
             //When
             val response = getFavoriteUseCase()
             //Then
             coVerify(exactly = 1) { repository.getFavorite() }
-            assert(response == favoriteList)
+            assert(response == success)
         }
     }
 
@@ -51,12 +54,13 @@ class GetFavoriteUseCaseTest {
     fun `when proyect doesnt return a favorite`() {
         runBlocking {
             //Given
-            coEvery { repository.getFavorite() } returns emptyList()
+            val empty: Flow<NetworkState<List<DomainModel>>> = flowOf()
+            coEvery { repository.getFavorite() } returns empty
             //Then
             val response = getFavoriteUseCase()
             //When
             coVerify(exactly = 1) { repository.getFavorite() }
-            assert(response == emptyList<DomainFavoritesModel>())
+            assert(response == empty)
 
         }
     }
